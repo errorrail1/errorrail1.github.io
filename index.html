@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Num Pad Proxy Redirect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .num-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+        }
+        .num-pad button {
+            width: 100px;
+            height: 100px;
+            font-size: 24px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .num-pad button:hover {
+            background-color: #2980b9;
+        }
+        .num-pad button:active {
+            background-color: #1f6d8c;
+        }
+        .display {
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .clear {
+            grid-column: span 3;
+        }
+        #content {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="display" id="display">Enter Code</div>
+        <div class="num-pad">
+            <button onclick="appendToDisplay(1)">1</button>
+            <button onclick="appendToDisplay(2)">2</button>
+            <button onclick="appendToDisplay(3)">3</button>
+            <button onclick="appendToDisplay(4)">4</button>
+            <button onclick="appendToDisplay(5)">5</button>
+            <button onclick="appendToDisplay(6)">6</button>
+            <button onclick="appendToDisplay(7)">7</button>
+            <button onclick="appendToDisplay(8)">8</button>
+            <button onclick="appendToDisplay(9)">9</button>
+            <button onclick="appendToDisplay(0)">0</button>
+            <button class="clear" onclick="clearDisplay()">Clear</button>
+            <button onclick="checkCode()">Enter</button>
+        </div>
+    </div>
+
+    <script>
+        let currentCode = "";
+
+        // Function to append a number to the current code
+        function appendToDisplay(num) {
+            currentCode += num;
+            document.getElementById('display').innerText = currentCode;
+        }
+
+        // Function to clear the current input
+        function clearDisplay() {
+            currentCode = "";
+            document.getElementById('display').innerText = "Enter Code";
+        }
+
+        // Function to check if the code is correct and redirect
+        function checkCode() {
+            if (currentCode === "1234") {
+                // Change the URL without reloading the page
+                history.pushState({}, '', window.location.pathname);
+                loadProxyContent(); // Load the proxy content without changing the URL
+            } else {
+                alert("Incorrect code. Try again.");
+                clearDisplay();
+            }
+        }
+
+        // Function to load content dynamically when proxy=true is in the URL
+        function handleProxy() {
+            // Check if we are in the "proxy" state
+            if (document.location.href.indexOf("proxy=true") > -1) {
+                loadProxyContent();
+            }
+        }
+
+        // Function to dynamically load another HTML file into an iframe
+        function loadProxyContent() {
+            // Create an iframe to load the proxy content
+            const iframe = document.createElement('iframe');
+            iframe.src = 'proxy-content.html';  // New HTML file to load
+            iframe.id = 'content';
+            document.body.innerHTML = '';  // Clear the existing content
+            document.body.appendChild(iframe); // Add iframe to body
+        }
+
+        // Run when the page loads to check for proxy state
+        window.onload = handleProxy;
+    </script>
+</body>
+</html>
