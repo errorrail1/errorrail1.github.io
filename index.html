@@ -87,7 +87,7 @@
 
         // Function to check if the code is correct and redirect
         function checkCode() {
-            if (currentCode === "1234") {
+            if (currentCode === "4821") {
                 // Change the URL without reloading the page
                 history.pushState({}, '', window.location.pathname);
                 loadProxyContent(); // Load the proxy content without changing the URL
@@ -109,7 +109,7 @@
         function loadProxyContent() {
             // Create an iframe to load the proxy content
             const iframe = document.createElement('iframe');
-            iframe.src = 'proxy-content.html';  // New HTML file to load
+            iframe.src = 'static/index.html';  // New HTML file to load
             iframe.id = 'content';
             document.body.innerHTML = '';  // Clear the existing content
             document.body.appendChild(iframe); // Add iframe to body
